@@ -1,6 +1,6 @@
 
 # catch execption
-f
+f = None
 
 try:
  f = open("/exception.txt","r",encoding="utf-8")
@@ -9,12 +9,12 @@ except:
  f = open("/exception.txt","w",encoding="utf-8")
  
 f.close()
-# catch all exception (ÏÔÊ½²¶»ñËùÓĞÒì³£)
+# catch all exception (æ˜¾ç¤ºæ•è·å¼‚å¸¸)
 try:
    f = open("/exception.txt","r",encoding="utf-8")     
 except Exception as e:
    f = open("/exception.txt","w",encoding="utf-8")
-    # (ÒşÊ½²¶»ñËùÓĞÒì³£)
+    # (éšå¼æ•è·æ‰€æœ‰å¼‚å¸¸)
 
 '''
 except:
