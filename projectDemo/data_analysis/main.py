@@ -1,14 +1,15 @@
 ﻿from generate_data_module import generate_data
 from write_to_file import FileDataSet
 from pyecharts.charts import Bar
-from os import path
 
-data_dir = "D:\\Project\\pythonProject\\python"
-data_dir2 = "D:\\project\\pythonProject\\studyPython"
+import os
 
-file_data: FileDataSet = FileDataSet(path.join(data_dir, "data.txt"))
 
-data = generate_data(10)
+root_dir = os.path.join(os.path.dirname(__file__), "../../")
+
+file_data: FileDataSet = FileDataSet(os.path.join(root_dir, "data.txt"))
+
+data = generate_data(100)
 
 
 for item in data:

@@ -34,7 +34,6 @@ class FileDataSet:
         # write data to file
         self.__file.write(data)
         self.__file.write('\n')
-        self.save_to_file()
 
     def save_to_file(self):
         self.__file.flush()
@@ -59,7 +58,8 @@ class FileDataSet:
         return data_list
 
     def read_all(self):
-        data_list = dict()
+        self.__file.seek(0)
+        data_list = list()
         for line in self.__file.readlines():
             data_list.append(json.loads(line.replace('\n', '')))
         return data_list

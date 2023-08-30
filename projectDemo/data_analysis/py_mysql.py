@@ -1,11 +1,11 @@
 from dotenv import load_dotenv
 from pymysql import Connection
-from time import sleep, time
+from time import time
 import os
 
 
 c_abs_path = os.path.dirname(__file__)
-t_abs_path = os.path.join(c_abs_path, "../../../.env")
+t_abs_path = os.path.join(c_abs_path, "../../.env")
 load_dotenv(dotenv_path=t_abs_path)
 
 
@@ -13,7 +13,7 @@ class SQL_CONNECTION:
     try_count = 0
     sql_instance = None
 
-    def __get_sql_instance(self, message: str = f"Start Connection .... {time()}") -> (Connection | None):
+    def __get_sql_instance(message: str = f"Start Connection .... {time()}") -> (Connection | None):
         if SQL_CONNECTION.sql_instance != None:
             print("Already connected to sql")
 
@@ -44,18 +44,21 @@ class SQL_CONNECTION:
 
             print(f"Connection to {host} sql failed!")
 
-            return self.__get_sql_instance(f"Retrying {SQL_CONNECTION.try_count} ...... {time()}")
+            return SQL_CONNECTION.__get_sql_instance(f"Retrying {SQL_CONNECTION.try_count} ...... {time()}")
 
     def __init__(self):
-        SQL_CONNECTION.sql_instance = self.__get_sql_instance()
+        SQL_CONNECTION.sql_instance = SQL_CONNECTION.__get_sql_instance()
 
-    def get_sql_instance(self):
+    def get_sql_instance(*database: ()):
+        if not SQL_CONNECTION.sql_instance:
+            SQL_CONNECTION()
+        if len(database):
+            data_base_name = str(database[0])
+            SQL_CONNECTION.sql_instance.select_db(data_base_name)
+
         return SQL_CONNECTION.sql_instance
 
-    def close_sql_instance(self):
+    def close_sql_instance():
+        print("Connection closed.....")
         SQL_CONNECTION.sql_instance.close()
         SQL_CONNECTION.sql_instance = None
-
-
-SQL_CONNECTION()
-SQL_CONNECTION()
