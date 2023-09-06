@@ -11,21 +11,14 @@ class Neural_Network:
         self.output_nodes = output_nodes
         self.learning_rate = learning_rate
 
-        self.wih = [[1, 2], [3, 4]]
-        # self.wih = (numpy.random.rand(
-        #     self.hidden_nodes, self.input_nodes) - 0.5)
-        # self.who = (numpy.random.rand(
-        #     self.output_nodes, self.hidden_nodes) - 0.5)
-        self.who = [[3, 4], [1, 2]]
-        self.wih_pow = numpy.random.normal(
+        self.wih = numpy.random.normal(
             0.0, pow(self.hidden_nodes, -0.5), (self.hidden_nodes, self.input_nodes))
 
-        self.wio_pow = numpy.random.normal(
+        self.who = numpy.random.normal(
             0.0, pow(self.output_nodes, -0.5), (self.output_nodes, self.hidden_nodes))
 
         # activation_function
-        # self.activation_function = lambda x: scipy.special.expit(x)
-        self.activation_function = lambda x: numpy.array(x)
+        self.activation_function = lambda x: scipy.special.expit(x)
 
     def train(self, inputs_list, targets_list):
         inputs = numpy.array(inputs_list, ndmin=2).T
@@ -40,9 +33,15 @@ class Neural_Network:
         final_outputs = self.activation_function(final_inputs)
 
         output_errors = targets - final_outputs
-        print(output_errors, "output_errors")
 
-        pass
+        hidden_errors = numpy.dot(self.who.T, output_errors)
+
+        self.who += self.learning_rate * numpy.dot((output_errors * final_outputs *
+                                                    (1.0 - final_outputs)), numpy.transpose(hidden_outputs))
+
+        self.wih += self.learning_rate * numpy.dot((hidden_errors * hidden_outputs *
+                                                    (1.0 - hidden_outputs)), numpy.transpose(inputs))
+        return numpy.array(final_outputs).T.flatten()
 
     def query(self, inputs_list):
 
@@ -56,7 +55,7 @@ class Neural_Network:
 
         final_outputs = self.activation_function(final_inputs)
 
-        return final_outputs
+        return numpy.argmax(numpy.array(final_outputs).T.flatten())
 
 
 if __name__ == "__main__":
@@ -71,16 +70,10 @@ if __name__ == "__main__":
     nn = Neural_Network(input_nodes, hidden_nodes,
                         output_nodes, learning_rate)
 
-    # print(nn.wih)
-    # print(numpy.array(nn.who).T)
-    # print(nn.who)
+    print(nn.wih)
+    print(numpy.array(nn.who).T)
+    print(nn.who)
 
-    # test = nn.query([1.0, 3.0])
-    # nn.train([1.0, 3.0], [1.0, 1.0])
-    # print(test, "test")
-
-    w = [[1, 4], [2, 1]]
-
-    out = numpy.dot(w, [1, 1])
-
-    print(out)
+    test = nn.query([1.0, 3.0, 5.0])
+    nn.train([1.0, 3.0, 5.0], [1.0, 0.5, 0.8])
+    print(test, "test")

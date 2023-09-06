@@ -163,3 +163,11 @@ cython_debug/
 # vscode or visual studio
 .vs
 .vscode
+
+
+# WI report
+
+WI*.json
+
+# csv file
+*.csv
