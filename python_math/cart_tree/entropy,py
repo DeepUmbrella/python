@@ -1,0 +1,22 @@
+# 信息熵的计算
+
+import numpy as np
+
+import matplotlib.pyplot as plt
+
+
+p = np.linspace(0, 1, 100)
+
+# 两点分布的熵igmoid函数
+
+
+def twoPoint(p):
+    return -(1-p)*np.log(1-p) - p * np.log(p)
+
+
+print(twoPoint(p))
+
+
+plt.plot(p, twoPoint(p), "r-", lw=2)
+
+plt.show()
